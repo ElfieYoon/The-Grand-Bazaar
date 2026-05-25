@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <!-- ============================================================
+       ANALYTICS: Microsoft Clarity tracking tag
+       ============================================================ -->
+  <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "wwig5njj7i");
+  </script>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Grand Bazaar Quest &middot; Procurement Archetype</title>
+
+  <!-- ============================================================
+       FONTS: Google Fonts — Cinzel Decorative, Cinzel, DM Sans, Inter
+       ============================================================ -->
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@500;600&family=DM+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+
+    /* ============================================================
+       RESET & BASE BODY
+       ============================================================ */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',sans-serif;min-height:100vh;padding:58px 20px 64px;position:relative;overflow-x:hidden;color:#1c1208;background:linear-gradient(160deg,#3a0010 0%,#650e1c 28%,#7d1a1a 52%,#5c0e0e 76%,#350008 100%);background-attachment:fixed}
+
+    /* ============================================================
+       BACKGROUND: Floating particle shapes
+       ============================================================ */
+    .bgs{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+    .bgi{position:absolute;opacity:.042;animation:bgf linear infinite}
+    @keyframes bgf{0%{transform:translateY(110vh) rotate(0)}100%{transform:translateY(-20vh) rotate(360deg)}}
+
+    /* ============================================================
+       LAYOUT: Main app container
+       ============================================================ */
+    #app{max-width:560px;margin:0 auto;position:relative;z-index:10}
+
+    /* ============================================================
+       CARD: Shared card container styles
+       ============================================================ */
+    .card{background:#fff;border-radius:22px;box-shadow:0 4px 14px rgba(0,0,0,.24),0 14px 52px rgba(0,0,0,.3);overflow:hidden;margin-bottom:16px}
+
+    /* ============================================================
+       SCENE WINDOW: SVG illustration area at top of each card
+       ============================================================ */
+    .sw{position:relative;height:272px;overflow:hidden;background:#08001a}
+    .ssv{position:absolute;inset:0;width:100%;height:100%;transition:opacity .55s ease;animation:span 24s ease-in-out infinite;transform-origin:center}
+    @keyframes span{0%,100%{transform:scale(1.07) translate(0,0)}35%{transform:scale(1.08) translate(-8px,-4px)}68%{transform:scale(1.07) translate(7px,3px)}}
+    .sovl{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,0) 25%,rgba(0,0,0,.65) 100%);pointer-events:none}
+
+    /* ============================================================
+       QUESTION CARD: Body content area
+       ============================================================ */
+    .qb{padding:14px 22px 18px}
+
+    /* Back button */
+    .back-btn{display:inline-flex;align-items:center;gap:5px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:#7c3700;background:rgba(124,55,0,.07);border:1.5px solid rgba(124,55,0,.28);border-radius:100px;cursor:pointer;padding:5px 13px 5px 9px;margin-bottom:12px;letter-spacing:.3px;transition:color .15s,background .15s,border-color .15s;line-height:1}
+    .back-btn:hover{background:rgba(124,55,0,.14);border-color:rgba(124,55,0,.5);color:#5c2800}
+    .back-btn:hover{color:#7c3700}
+    .back-btn svg{width:14px;height:14px;flex-shrink:0}
+    .back-btn.hidden{visibility:hidden;pointer-events:none}
+
+    /* Question number label */
+    .qn{font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7c3700;margin-bottom:5px}
+
+    /* Question text */
+    .qt{font-family:'Cinzel',serif;font-size:16px;font-weight:500;line-height:1.58;color:#1c1208;margin-bottom:10px}
+
+    /* ============================================================
+       ANSWER OPTIONS: List of answer buttons per question
+       ============================================================ */
+    .os{display:flex;flex-direction:column;gap:8px}
+    .ob{display:flex;align-items:center;gap:12px;padding:11px 14px;background:#fafaf8;border:1.5px solid #e8ddd0;border-radius:12px;cursor:pointer;text-align:left;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:#3d2b1f;transition:background .17s,border-color .17s,color .17s;opacity:0;transform:translateY(8px);width:100%}
+    .ob.in{opacity:1;transform:translateY(0);transition:opacity .3s,transform .3s,background .17s,border-color .17s,color .17s}
+    .ob:hover{background:#fff8ec;border-color:#d97706;color:#1c1208}
+    .ob.sel{background:#fef3c7;border-color:#d97706}
+
+    /* Option letter label (A/B/C/D bubble) */
+    .ol{min-width:28px;height:28px;border-radius:50%;background:#f0e8d8;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:.5px;color:#7c3700;flex-shrink:0;transition:background .17s,color .17s}
+    .ob.sel .ol{background:#d97706;color:#fff}
+
+    /* ============================================================
+       INTRO CARD: Title, description, and start button
+       ============================================================ */
+    .ib{padding:28px 28px 34px;text-align:center}
+    .ik{display:inline-block;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:#7c3700;background:#fef3c7;border:1px solid #fcd34d;border-radius:100px;padding:5px 16px;margin-bottom:16px}
+    .it{font-family:'Cinzel Decorative',serif;font-size:22px;line-height:1.3;color:#1c1208;margin-bottom:10px}
+    .it em{color:#b45309;font-style:normal}
+    .is{font-family:'DM Sans',sans-serif;font-size:14px;color:#6b5c4a;line-height:1.78;max-width:380px;margin:0 auto 20px}
+
+    /* Intro characteristic tags */
+    .ich{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin-bottom:26px}
+    .ich span{font-size:12px;font-weight:600;padding:4px 12px;border-radius:100px;border:1.5px solid}
+
+    /* Shared primary CTA button (Begin Journey, etc.) */
+    .bs{font-family:'Inter',sans-serif;font-weight:700;font-size:14px;padding:13px 38px;border:none;border-radius:100px;cursor:pointer;background:linear-gradient(135deg,#7c3700,#d97706);color:#fff;letter-spacing:.3px;box-shadow:0 5px 20px rgba(124,55,0,.28);transition:transform .15s,box-shadow .15s}
+    .bs:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(124,55,0,.32)}
+    .bs:active{transform:scale(.97)}
+
+    /* ============================================================
+       RESULT CARD: Legacy result layout (kept for compatibility)
+       ============================================================ */
+    .rb{padding:0}
+    .re{font-size:52px;display:block;text-align:center;margin-bottom:12px;animation:rbounce .7s cubic-bezier(.34,1.56,.64,1) both}
+    @keyframes rbounce{from{opacity:0;transform:scale(.35) rotate(-12deg)}to{opacity:1;transform:scale(1) rotate(0)}}
+    .rba{display:inline-block;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;border-radius:100px;padding:3px 14px}
+    .rbaw{text-align:center;display:block;margin-bottom:8px}
+    .rn{font-family:'Cinzel Decorative',serif;font-size:17px;text-align:center;margin-bottom:4px}
+    .rs{font-size:11px;color:#6b5c4a;text-align:center;letter-spacing:.5px;text-transform:uppercase;margin-bottom:16px}
+    .rd{font-size:13px;line-height:1.82;color:#3d2b1f;margin-bottom:20px;padding:14px 16px;background:#fafaf8;border-radius:10px;border-left:3px solid #d97706}
+
+    /* Result trait tags */
+    .rtg{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:22px;justify-content:center}
+    .rtg span{font-size:11px;font-weight:600;padding:4px 13px;border-radius:100px;border:1.5px solid}
+
+    /* ============================================================
+       BREAKDOWN BARS: Score breakdown progress bars (legacy)
+       ============================================================ */
+    .bl{font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7c3700;margin-bottom:10px}
+    .brow{margin-bottom:8px}
+    .brl{display:flex;justify-content:space-between;font-size:12px;font-weight:500;color:#6b5c4a;margin-bottom:3px}
+    .bbg{height:5px;background:#f0e8d8;border-radius:100px;overflow:hidden}
+    .bfill{height:100%;border-radius:100px;transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0}
+
+    /* ============================================================
+       CAREER BLOCK: Dark blue career path panel
+       ============================================================ */
+    .cb{margin-top:22px;background:#1e3a5f;border-radius:14px;padding:20px 20px 18px}
+    .ch{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+    .ci{font-size:20px}
+    .ct{font-family:'Cinzel',serif;font-size:13px;font-weight:600;letter-spacing:.6px;color:#fbbf24}
+    .ctxt{font-size:13px;line-height:1.78;color:rgba(255,255,255,.82);margin-bottom:12px}
+    .crl{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+    .cri{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:#fef3c7}
+    .crd{width:4px;height:4px;border-radius:50%;background:#fbbf24;flex-shrink:0}
+    .ccta{font-family:'Inter',sans-serif;font-size:12px;font-weight:600;letter-spacing:.4px;color:#fbbf24;border:1px solid rgba(251,191,36,.35);border-radius:100px;padding:7px 18px;background:transparent;cursor:pointer;transition:background .17s,border-color .17s}
+    .ccta:hover{background:rgba(251,191,36,.1);border-color:#fbbf24}
+
+    /* Retake quiz button */
+    .brt{display:block;width:100%;margin-top:18px;font-family:'Inter',sans-serif;font-weight:600;font-size:13px;padding:12px;border:1.5px solid #e8ddd0;border-radius:12px;background:transparent;cursor:pointer;color:#6b5c4a;transition:border-color .17s,color .17s}
+    .brt:hover{border-color:#7c3700;color:#1c1208}
+
+    /* ============================================================
+       ANIMATION: Card entrance animation
+       ============================================================ */
+    .cin{animation:cin .42s cubic-bezier(.4,0,.2,1) both}
+    @keyframes cin{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+
+    /* ============================================================
+       CONFETTI: Falling particles on result reveal
+       ============================================================ */
+    .cf{position:fixed;pointer-events:none;z-index:999;animation:cfd linear forwards}
+    @keyframes cfd{0%{transform:translateY(-10px) rotate(0);opacity:1}100%{transform:translateY(100vh) rotate(540deg);opacity:0}}
+
+    /* ============================================================
+       RESPONSIVE: Mobile adjustments (≤480px)
+       ============================================================ */
+    @media(max-width:480px){body{padding:52px 12px 56px}.qb,.rb,.ib{padding:20px 16px 24px}.qt{font-size:15px}.it{font-size:19px}.is{font-size:12px}.rn{font-size:15px}}
+
+
+    /* ============================================================
+       RESULTS v2: Full archetype result layout
+       ============================================================ */
+
+    /* "You are..." header */
+    .r2-ya{text-align:center;padding:10px 18px 0;font-family:'Cinzel',serif;font-size:20px;font-weight:500;letter-spacing:3px;text-transform:uppercase;color:#9a7860}
+
+    /* Top row: character illustration + info summary */
+    .r2-top{display:flex;gap:10px;padding:8px 16px 12px;align-items:flex-start}
+    .r2-char-col{flex:0 0 auto;display:flex;flex-direction:column;align-items:center}
+
+    /* Character container — no fixed height so the full-body image is never clipped */
+    .r2-char-wrap{position:relative;width:100px;}
+
+    /* Archetype character image
+       - width fixed to 100px; height auto preserves each image's proportions
+       - float animation replicates the original SVG translateY(0 → -10px → 0, 3s) */
+    .r2-char-img{position:relative;z-index:2;width:100px;height:auto;display:block;animation:charFloat 3s ease-in-out infinite;}
+    @keyframes charFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+    /* Aura glow behind character */
+    .r2-aura{position:absolute;width:76px;height:76px;border-radius:50%;top:26px;left:12px;filter:blur(22px);animation:auraP 3s ease-in-out infinite;z-index:0;transition:background .4s}
+    @keyframes auraP{0%,100%{opacity:.28;transform:scale(1)}50%{opacity:.52;transform:scale(1.2)}}
+
+    /* Archetype info column (badge, name, traits) */
+    .r2-info-col{flex:1;min-width:0}
+    .r2-badge{display:inline-block;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;border-radius:100px;padding:3px 11px;border:1.5px solid;margin-bottom:4px}
+    .r2-name{font-family:'Cinzel Decorative',serif;font-size:16px;line-height:1.2;margin-bottom:1px;word-break:break-word}
+    .r2-sub{font-size:10px;letter-spacing:.9px;text-transform:uppercase;color:#9a7860;margin-bottom:5px;font-weight:600}
+    .r2-pct{font-size:11px;color:#6b5c4a;margin-bottom:8px;line-height:1.4}
+    .r2-pct strong{font-weight:700;color:#3d2b1f}
+
+    /* Trait pill tags */
+    .r2-traits{display:flex;flex-wrap:wrap;gap:4px}
+    .r2-trait{font-size:10.5px;font-weight:600;padding:3px 9px;border-radius:6px;border:1.5px solid;letter-spacing:.1px;cursor:default;transition:transform .15s}
+    .r2-trait:hover{transform:translateY(-1px)}
+
+    /* Horizontal divider */
+    .r2-div{height:1px;background:linear-gradient(to right,transparent,#e8ddd0 20%,#e8ddd0 80%,transparent);margin:0 16px}
+
+    /* ============================================================
+       RESULTS v2: Strengths + Workstyle Composition (two-column grid)
+       ============================================================ */
+    .r2-mid{display:grid;grid-template-columns:1fr 1fr;padding:10px 16px;gap:0}
+    .r2-str-col{padding-right:12px;border-right:1px solid #f0e8d8}
+    .r2-comp-col{padding-left:12px}
+
+    /* Shared section header style */
+    .r2-sec-hd{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 7px;border-radius:4px;margin-bottom:7px;text-align:center;border:1px solid}
+
+    /* Strengths bullet list */
+    .r2-str-list{list-style:none;display:flex;flex-direction:column;gap:5px}
+    .r2-str-item{display:flex;align-items:flex-start;gap:6px;font-family:'DM Sans',sans-serif;font-size:12px;line-height:1.5;color:#3d2b1f}
+    .r2-str-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px}
+
+    /* Composition percentage items */
+    .r2-comp-list{display:flex;flex-direction:column;gap:6px}
+    .r2-comp-item{line-height:1.15}
+    .r2-comp-pct{font-weight:800;font-size:14px;display:block}
+    .r2-comp-lbl{font-family:'DM Sans',sans-serif;font-size:12px;color:#6b5c4a}
+
+    /* ============================================================
+       RESULTS v2: "Complemented By" archetype cards
+       ============================================================ */
+    .r2-compby{padding:0 16px 10px}
+    .r2-compby-hd{font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;text-align:center;padding:3px 7px;border-radius:4px;margin-bottom:8px;border:1px solid}
+    .r2-compby-cards{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+    .r2-compby-card{border-radius:10px;padding:10px 9px;text-align:center;border:1.5px solid;transition:transform .2s,box-shadow .2s;cursor:default}
+    .r2-compby-card:hover{transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.1)}
+    .r2-compby-emoji{font-size:20px;display:block;margin-bottom:3px}
+    .r2-compby-name{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;margin-bottom:2px}
+    .r2-compby-desc{font-family:'DM Sans',sans-serif;font-size:12px;color:#6b5c4a;line-height:1.45}
+
+    /* ============================================================
+       RESULTS v2: Career path dark panel
+       ============================================================ */
+    .r2-career{margin:0 16px 13px;background:#1e3a5f;border-radius:12px;padding:12px 13px 10px}
+    .r2-career-hd{display:flex;align-items:center;gap:7px;margin-bottom:6px}
+    .r2-career-icon{font-size:15px}
+    .r2-career-title{font-family:'Cinzel',serif;font-size:16px;font-weight:600;letter-spacing:.6px;color:#fbbf24}
+    .r2-career-txt{font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;color:rgba(255,255,255,.82);margin-bottom:8px}
+    .r2-cta-link{display:inline-block;margin-bottom:8px;font-family:'Inter',sans-serif;font-size:11px;font-weight:600;letter-spacing:.3px;color:#fbbf24;border:1px solid rgba(251,191,36,.4);border-radius:100px;padding:6px 15px;background:transparent;text-decoration:none;cursor:pointer;transition:background .17s,border-color .17s}
+    .r2-cta-link:hover{background:rgba(251,191,36,.12);border-color:#fbbf24}
+    .r2-career-roles{display:flex;flex-direction:column;gap:3px}
+    .r2-career-role{display:flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:13.5px;font-weight:500;color:#fef3c7}
+    .r2-career-dot{width:3px;height:3px;border-radius:50%;background:#fbbf24;flex-shrink:0}
+
+    /* Retake button in v2 results */
+    .r2-retake{display:block;width:calc(100% - 32px);margin:0 16px 16px;font-family:'Inter',sans-serif;font-weight:600;font-size:12.5px;padding:9px;border:1.5px solid #e8ddd0;border-radius:10px;background:transparent;cursor:pointer;color:#6b5c4a;transition:border-color .17s,color .17s}
+    .r2-retake:hover{border-color:#7c3700;color:#1c1208}
+
+    /* ============================================================
+       SPARKLE PARTICLES: Float up around character illustration
+       ============================================================ */
+    .spar{position:absolute;border-radius:50%;pointer-events:none;animation:sparF linear infinite}
+    @keyframes sparF{0%{opacity:0;transform:translateY(0) scale(0)}18%{opacity:.7}80%{opacity:.3}100%{opacity:0;transform:translateY(-44px) scale(1.4)}}
+
+    /* ============================================================
+       RESPONSIVE v2: Mobile overrides (≤480px)
+       ============================================================ */
+    @media(max-width:480px){.r2-top{flex-direction:column;align-items:center;text-align:center}.r2-traits{justify-content:center}.r2-mid{grid-template-columns:1fr}.r2-str-col{padding-right:0;border-right:none;border-bottom:1px solid #f0e8d8;padding-bottom:9px;margin-bottom:9px}.r2-comp-col{padding-left:0}.r2-name{font-size:14px}.r2-proc-hd{font-size:19px}.r2-ya{font-size:17px}.r2-career-title{font-size:14px}.r2-career-txt{font-size:12px}.r2-career-role{font-size:11.5px}.r2-view-arch{font-size:11.5px}.r2-sec-hd{font-size:12px}.r2-compby-hd{font-size:12px}.r2-str-item{font-size:10.5px}.r2-compby-name{font-size:10.5px}.r2-compby-desc{font-size:10.5px}.r2-comp-lbl{font-size:10.5px}}
+
+
+    /* ============================================================
+       PROGRESS TRACK: Step indicator bar at top of question card
+       ============================================================ */
+    #ptrack{display:flex;gap:7px;margin-bottom:14px}
+    .pts{flex:1;height:4px;border-radius:2px;background:rgba(0,0,0,.09);transition:background .35s}
+    .pts.done{background:linear-gradient(90deg,#7c3700,#d97706)}
+    .pts.active{background:#fbbf24;animation:ptpulse 1s ease-in-out infinite alternate}
+    @keyframes ptpulse{from{opacity:.6}to{opacity:1}}
+
+
+    /* ============================================================
+       PROCUREMENT RESULT CARD: First result screen shown after quiz
+       ============================================================ */
+    .r2-proc-hd{text-align:center;padding:18px 16px 14px;font-family:'Cinzel',serif;font-size:22px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:#1e3a5f;border-bottom:1px solid #f0e8d8;margin-bottom:12px}
+
+    /* Prominent gold CTA button (Explore Procurement) */
+    .r2-cta-wrap{padding:6px 16px 10px;text-align:center}
+    .r2-cta-prominent{display:inline-block;font-family:'Inter',sans-serif;font-size:13.5px;font-weight:700;letter-spacing:.4px;color:#1e3a5f;background:linear-gradient(135deg,#fbbf24,#d97706);border-radius:100px;padding:12px 34px;text-decoration:none;cursor:pointer;transition:opacity .17s,transform .17s;box-shadow:0 3px 16px rgba(217,119,6,.42)}
+    .r2-cta-prominent:hover{opacity:.86;transform:translateY(-2px)}
+
+    /* Secondary "View Archetype" outline button */
+    .r2-view-arch{display:block;width:calc(100% - 32px);margin:6px 16px 20px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:13.5px;padding:12px;border:2px solid #1e3a5f;border-radius:12px;background:transparent;cursor:pointer;color:#1e3a5f;transition:background .18s,color .18s,transform .15s;letter-spacing:.3px}
+    .r2-view-arch:hover{background:#1e3a5f;color:#fff;transform:translateY(-1px)}
+
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       BACKGROUND: Particle container (populated by JS below)
+       ============================================================ -->
+  <div class="bgs" id="bgs"></div>
+
+
+  <div id="app">
+
+    <!-- ============================================================
+         CARD 1: INTRO CARD
+         Shown on page load. Describes the quiz and has the start button.
+         ============================================================ -->
+    <div class="card" id="iCard">
+      <div class="sw">
+        <svg class="ssv" id="iSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 680 290"></svg>
+        <div class="sovl"></div>
+      </div>
+      <div class="ib">
+        <div class="ik">9 Questions &nbsp;&middot;&nbsp; 3 Minutes</div>
+        <h1 class="it">The Grand Bazaar <em>Quest</em></h1>
+        <p class="is">You and your friends have been magically transported to the Grand Bazaar, a sprawling fantasy marketplace where spices, tools, and treasures change hands every day. Your village is counting on you to bring back what it needs before the market closes. The choices you make will reveal how you naturally think, decide, and get things done.</p>
+        <button type="button" class="bs" onclick="startQuiz()">Begin Your Journey &rarr;</button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CARD 2: QUESTION CARD
+         Hidden by default. Shown during the quiz. Re-rendered per question.
+         ============================================================ -->
+    <div class="card" id="qCard" style="display:none">
+      <div class="sw">
+        <svg class="ssv" id="qSvg" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" viewBox="0 0 680 290"></svg>
+        <div class="sovl"></div>
+      </div>
+      <div class="qb">
+        <!-- Back button (hidden on question 1) -->
+        <button type="button" class="back-btn hidden" id="backBtn" onclick="goBack()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Back
+        </button>
+        <!-- Question number label -->
+        <div class="qn" id="qn"></div>
+        <!-- Step progress track (filled by renderQ) -->
+        <div id="ptrack"></div>
+        <!-- Question text -->
+        <div class="qt" id="qt"></div>
+        <!-- Answer option buttons (filled by renderQ) -->
+        <div class="os" id="os"></div>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CARD 3: PROCUREMENT RESULT CARD
+         First screen shown after all 9 questions are answered.
+         Contains career path text, role suggestions, and CTA.
+         ============================================================ -->
+    <div class="card" id="rCard" style="display:none">
+      <div class="rb">
+        <div class="r2-proc-hd">Your Procurement Journey</div>
+        <div class="r2-career">
+          <div class="r2-career-hd">
+            <span class="r2-career-icon">&#x1F9ED;</span>
+            <span class="r2-career-title">Your Procurement Path</span>
+          </div>
+          <!-- Career description text (populated by showResult) -->
+          <p class="r2-career-txt" id="r2CareerTxt"></p>
+          <!-- Career role list (populated by showResult) -->
+          <div class="r2-career-roles" id="r2CareerRoles"></div>
+          <div class="r2-cta-wrap">
+            <a href="https://www.mof.gov.sg/careers/procurement-professional-programme/" class="r2-cta-prominent" target="_blank" rel="noopener noreferrer">Explore a Career in Procurement &#8594;</a>
+          </div>
+        </div>
+        <!-- Button to reveal full archetype result -->
+        <button type="button" class="r2-view-arch" onclick="showGeneralResults()">View Your Archetype Result &#8594;</button>
+      </div>
+    </div>
+
+    <!-- ============================================================
+         CARD 4: GENERAL ARCHETYPE RESULT CARD
+         Full archetype breakdown. Shown after clicking "View Archetype".
+         Contains animated character, traits, strengths, composition,
+         complemented-by archetypes, and retake button.
+         ============================================================ -->
+    <div class="card" id="gCard" style="display:none">
+      <div class="rb">
+
+        <!-- Back to procurement journey -->
+        <button type="button" class="back-btn" style="margin:14px 16px 4px;" onclick="showRCard()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+          Back to your Procurement Journey
+        </button>
+
+        <div class="r2-ya">You are...</div>
+
+        <!-- Top section: animated character + archetype summary -->
+        <div class="r2-top">
+
+          <!-- Left column: character SVG illustration with aura + sparkles -->
+          <div class="r2-char-col">
+            <div class="r2-char-wrap" id="charWrap">
+              <!-- Aura glow (colour set dynamically by showResult) -->
+              <div class="r2-aura" id="rAura"></div>
+              <!-- Archetype character image (src and alt set dynamically by showResult via ARCHETYPE_IMAGES) -->
+              <img id="rCharImg" class="r2-char-img" src="" alt="">
+            </div>
+          </div>
+
+          <!-- Right column: badge, name, percentage, trait pills -->
+          <div class="r2-info-col">
+            <div class="r2-badge" id="r2Badge"></div>
+            <h2 class="r2-name" id="r2Name"></h2>
+            <div class="r2-pct" id="r2Pct"></div>
+            <div class="r2-traits" id="r2Traits"></div>
+          </div>
+
+        </div>
+
+        <div class="r2-div"></div>
+
+        <!-- Two-column section: Strengths (left) + Workstyle Composition (right) -->
+        <div class="r2-mid">
+          <div class="r2-str-col">
+            <div class="r2-sec-hd" id="r2StrHd">Strengths</div>
+            <ul class="r2-str-list" id="r2StrList"></ul>
+          </div>
+          <div class="r2-comp-col">
+            <div class="r2-sec-hd" id="r2CompHd">Your Workstyle Composition</div>
+            <div class="r2-comp-list" id="r2CompList"></div>
+          </div>
+        </div>
+
+        <div class="r2-div" style="margin-bottom:10px"></div>
+
+        <!-- Complemented-by archetype cards -->
+        <div class="r2-compby">
+          <div class="r2-compby-hd" id="r2CbHd">Workstyle Most Complemented By</div>
+          <div class="r2-compby-cards" id="r2CbCards"></div>
+        </div>
+
+        <!-- Procurement CTA -->
+        <div class="r2-cta-wrap">
+          <a href="https://www.mof.gov.sg/careers/procurement-professional-programme/" class="r2-cta-prominent" target="_blank" rel="noopener noreferrer">Explore a Career in Procurement &#8594;</a>
+        </div>
+
+        <!-- Retake button -->
+        <button type="button" class="r2-retake" onclick="resetQuiz()">&#8592; Retake the Quest</button>
+
+      </div>
+    </div>
+
+  </div><!-- /#app -->
+
+
+  <script>
+
+    // ============================================================
+    // BACKGROUND PARTICLES
+    // Spawns 16 floating translucent circles/shapes in the background.
+    // ============================================================
+    (function(){
+      var b = document.getElementById('bgs');
+      var c = ['#7a1a1a','#a01c2c','#c41828','#8b0000','#b22020','#991414','#7c1212'];
+      for (var i = 0; i < 16; i++) {
+        var d = document.createElement('div');
+        d.className = 'bgi';
+        var s = 38 + Math.random() * 92;
+        d.style.cssText =
+          'width:' + s + 'px;height:' + s + 'px;left:' + (Math.random() * 100) + '%;' +
+          'background:' + c[i % c.length] + ';' +
+          'animation-duration:' + (18 + Math.random() * 22) + 's;' +
+          'animation-delay:-' + (Math.random() * 18) + 's;' +
+          'border-radius:' + (Math.random() > .5 ? '50%' : '22%');
+        b.appendChild(d);
+      }
+    })();
+
+
+    // ============================================================
+    // SVG HELPER FUNCTIONS
+    // Inline SVG generation utilities for animated scene elements.
+    // ============================================================
+
+    // Twinkling star circle
+    function st(x, y, r, o, d, bg) {
+      return '<circle cx="' + x + '" cy="' + y + '" r="' + r + '" fill="white" opacity="' + o + '">' +
+        '<animate attributeName="opacity" values="' + o + ';.1;' + o + '" dur="' + d + 's" begin="' + bg + 's" repeatCount="indefinite"/>' +
+        '</circle>';
+    }
+
+    // Hanging lantern element
+    function lan(x, ty, by, d, bg) {
+      return '<g><animateTransform attributeName="transform" type="rotate" values="-4 ' + x + ' ' + ty + ';4 ' + x + ' ' + ty + ';-4 ' + x + ' ' + ty + '" dur="' + d + 's" begin="' + bg + 's" repeatCount="indefinite"/>' +
+        '<line x1="' + x + '" y1="' + ty + '" x2="' + x + '" y2="' + by + '" stroke="#fbbf24" stroke-width="1" opacity=".42"/>' +
+        '<ellipse cx="' + x + '" cy="' + (by + 10) + '" rx="7" ry="10" fill="#fbbf24" opacity=".88">' +
+        '<animate attributeName="opacity" values=".88;.65;.88" dur="2.2s" repeatCount="indefinite"/>' +
+        '</ellipse></g>';
+    }
+
+    // Animated torch flame element
+    function tch(x, y) {
+      return '<rect x="' + (x - 4) + '" y="' + (y + 10) + '" width="8" height="28" fill="#451a03"/>' +
+        '<ellipse cx="' + x + '" cy="' + (y + 10) + '" rx="10" ry="13" fill="#f97316" opacity=".9">' +
+        '<animate attributeName="opacity" values=".7;1;.8;1;.7" dur=".42s" repeatCount="indefinite"/>' +
+        '<animate attributeName="ry" values="13;15;12;14;13" dur=".42s" repeatCount="indefinite"/>' +
+        '</ellipse>' +
+        '<ellipse cx="' + x + '" cy="' + (y + 4) + '" rx="6" ry="8" fill="#fbbf24" opacity=".72">' +
+        '<animate attributeName="opacity" values=".55;.9;.65;.9;.55" dur=".42s" repeatCount="indefinite"/>' +
+        '</ellipse>';
+    }
+
+
+    // ============================================================
+    // SCENE SVG DATA
+    // Each key maps to a scene name used by a question or the intro/result.
+    // Image-based scenes use <image> tags pointing to local webp files.
+    // ============================================================
+    var SC = {
+
+      // Intro: procedural SVG night cityscape with stars and silhouette buildings
+      intro:
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#08001a"/><stop offset="55%" stop-color="#2a0848"/><stop offset="100%" stop-color="#7a1a08"/>' +
+        '</linearGradient></defs><rect width="680" height="290" fill="url(#g)"/>' +
+        st(72,44,1.5,.7,2.1,0)+st(158,24,1,.55,1.8,.4)+st(288,54,1.5,.65,2.5,.8)+
+        st(398,29,1,.7,1.9,.2)+st(488,64,1,.5,2.2,.6)+st(568,21,1.5,.75,1.7,1)+
+        st(638,47,1,.6,2.3,.3)+st(102,86,1,.5,1.9,.7)+st(222,74,1.2,.6,2.4,.1)+
+        st(348,84,1,.55,2,.5)+st(448,17,1,.7,1.8,.9)+st(528,69,1.2,.5,2.1,.4)+
+        '<circle cx="598" cy="54" r="18" fill="#fef3c7" opacity=".92"><animate attributeName="opacity" values=".92;1;.92" dur="5s" repeatCount="indefinite"/></circle>'+
+        '<circle cx="607" cy="48" r="14" fill="#2a0848"/>' +
+        // Building silhouettes
+        '<rect x="0" y="190" width="178" height="100" fill="#080015"/><ellipse cx="89" cy="188" rx="52" ry="35" fill="#080015"/>' +
+        '<rect x="68" y="122" width="30" height="70" fill="#080015"/><ellipse cx="83" cy="120" rx="12" ry="18" fill="#080015"/>' +
+        '<rect x="288" y="170" width="104" height="120" fill="#080015"/><ellipse cx="340" cy="168" rx="50" ry="34" fill="#080015"/>' +
+        '<rect x="318" y="102" width="26" height="70" fill="#080015"/><ellipse cx="331" cy="100" rx="11" ry="17" fill="#080015"/>' +
+        '<rect x="498" y="180" width="182" height="110" fill="#080015"/><ellipse cx="589" cy="178" rx="64" ry="43" fill="#080015"/>' +
+        '<rect x="560" y="112" width="36" height="70" fill="#080015"/><ellipse cx="578" cy="110" rx="14" ry="20" fill="#080015"/>' +
+        '<rect x="186" y="207" width="52" height="83" fill="#080015"/>' +
+        '<rect x="433" y="197" width="60" height="93" fill="#080015"/>' +
+        '<rect x="440" y="148" width="14" height="51" fill="#080015"/><ellipse cx="447" cy="146" rx="7" ry="11" fill="#080015"/>' +
+        '<rect y="248" width="680" height="42" fill="#080015"/>',
+
+      // Question scenes: image-based webp backgrounds
+      gates:      '<image href="Images/gates.webp"      x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      ngtent:     '<image href="Images/ngtent.webp"     x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      depot:      '<image href="Images/depot.webp"      x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      council:    '<image href="Images/council.webp"    x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      alley:      '<image href="Images/alley.webp"      x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      workshops:  '<image href="Images/workshops.webp"  x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      festival:   '<image href="Images/festival.webp"   x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      library:    '<image href="Images/library.webp"    x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+      crossroads: '<image href="Images/crossroads.webp" x="0" y="0" width="680" height="290" preserveAspectRatio="xMidYMid slice"/>',
+
+      // Result screen: procedural dusk cityscape with warm glow gradient
+      result:
+        '<defs>' +
+        '<linearGradient id="g" x1="0" y1="0" x2="0" y2="1">' +
+        '<stop offset="0%" stop-color="#0e1628"/><stop offset="28%" stop-color="#1c3858"/>' +
+        '<stop offset="58%" stop-color="#c03e0a"/><stop offset="80%" stop-color="#f57316"/>' +
+        '<stop offset="100%" stop-color="#f9bb22"/>' +
+        '</linearGradient>' +
+        '<radialGradient id="sg" cx="50%" cy="90%" r="30%">' +
+        '<stop offset="0%" stop-color="#fbbf24" stop-opacity=".72"/>' +
+        '<stop offset="100%" stop-color="#fbbf24" stop-opacity="0"/>' +
+        '</radialGradient>' +
+        '</defs>' +
+        '<rect width="680" height="290" fill="url(#g)"/>' +
+        st(78,26,1.2,.7,2.1,0)+st(218,14,1,.6,1.8,.4)+st(408,27,1.2,.55,2.4,.8)+st(558,17,1,.7,1.9,.2)+
+        '<ellipse cx="340" cy="266" rx="370" ry="124" fill="url(#sg)"/>' +
+        '<ellipse cx="340" cy="276" rx="50" ry="24" fill="#fbbf24" opacity=".9"/>' +
+        // Building silhouettes
+        '<rect x="0" y="222" width="138" height="68" fill="#0e1628"/><ellipse cx="69" cy="220" rx="42" ry="28" fill="#0e1628"/>' +
+        '<rect x="51" y="162" width="26" height="60" fill="#0e1628"/><ellipse cx="64" cy="160" rx="10" ry="15" fill="#0e1628"/>' +
+        '<rect x="268" y="202" width="144" height="88" fill="#0e1628"/><ellipse cx="340" cy="200" rx="62" ry="42" fill="#0e1628"/>' +
+        '<rect x="316" y="142" width="34" height="60" fill="#0e1628"/><ellipse cx="333" cy="140" rx="13" ry="20" fill="#0e1628"/>' +
+        '<rect x="456" y="212" width="124" height="78" fill="#0e1628"/><ellipse cx="518" cy="210" rx="52" ry="35" fill="#0e1628"/>' +
+        '<rect x="494" y="160" width="28" height="52" fill="#0e1628"/><ellipse cx="508" cy="158" rx="11" ry="17" fill="#0e1628"/>' +
+        '<rect x="146" y="230" width="112" height="60" fill="#0e1628"/><ellipse cx="202" cy="228" rx="46" ry="30" fill="#0e1628"/>' +
+        '<rect x="582" y="226" width="98" height="64" fill="#0e1628"/>' +
+        '<rect y="256" width="680" height="34" fill="#0e1628"/>'
+    };
+
+
+    // ============================================================
+    // QUESTION DATA
+    // Array of 9 question objects. Each has:
+    //   sc    — scene key (maps to SC above)
+    //   loc   — location name (display only)
+    //   q     — question text
+    //   opts  — array of answer options, each with:
+    //             l   — letter label (A/B/C/D)
+    //             t   — answer text
+    //             sc  — score map: { archetypeIndex: points }
+    // ============================================================
+    var QS = [
+      {
+        sc:'gates', loc:'The City Gates',
+        q:"You've just arrived at the Grand Bazaar and the clock is already ticking. The entrance buzzes with rival groups, eager vendors, and stalls as far as the eye can see. What's your first move?",
+        opts:[
+          {l:'A', t:'List what the village needs, split the search among your group, and agree on a meeting point.',                           sc:{0:3,3:1}},
+          {l:'B', t:'Work out which part of the market is most likely to have what you need before heading in.',                              sc:{1:3,4:1}},
+          {l:'C', t:'Ask people at the entrance which vendors are worth visiting and who can be trusted.',                                    sc:{2:3,1:1}},
+          {l:'D', t:'Head to a quieter, less obvious corner of the market where you might find options your village has never come across.',  sc:{3:3,4:1}}
+        ]
+      },
+      {
+        sc:'ngtent', loc:'The Negotiation Tent',
+        q:"A few steps in, you're pulled into a disagreement. A vendor wants more than the agreed price after their costs rose, while the buyer insists the original terms stand. Both turn to you. What do you do?",
+        opts:[
+          {l:'A', t:'Review the original agreement and base your recommendation on what was promised.',                                       sc:{0:3,3:1}},
+          {l:'B', t:'Look beyond the contract and consider what is genuinely fair and sustainable for both parties.',                         sc:{1:3,4:1}},
+          {l:'C', t:'Sit with both sides, understand the pressures each is facing, and help them find common ground.',                        sc:{2:3,1:1}},
+          {l:'D', t:"Propose terms that account for cost changes upfront, so this kind of dispute doesn't recur.",                           sc:{4:3,3:1}}
+        ]
+      },
+      {
+        sc:'depot', loc:'The Supply Depot',
+        q:"The dust has barely settled when two neighbouring stalls erupt into a dispute. Both have promised the last stock of a critical material to different customers, and neither will back down. How do you step in?",
+        opts:[
+          {l:'A', t:'Work out what each stall needs for their committed orders and divide the stock accordingly.',                            sc:{0:3,4:1}},
+          {l:'B', t:'Side with the stall that has the more urgent need, even if it means an unequal split.',                                 sc:{1:3,2:1}},
+          {l:'C', t:'Suggest both stalls find alternative suppliers or substitutes instead of competing over the same stock.',               sc:{3:3,0:1}},
+          {l:'D', t:'Flag that this keeps happening and push for a system that tracks stock levels before orders are placed.',               sc:{4:3,1:1}}
+        ]
+      },
+      {
+        sc:'council', loc:'The Council Chamber',
+        q:"The market manager mistakes you for a staff member, hands you a task to source goods the Bazaar has never carried, gives almost no guidance, and walks off. How do you take it?",
+        opts:[
+          {l:'A', t:'Focused. Your instinct is to clarify requirements, set a budget, and build a plan before approaching any vendors.',     sc:{0:3,3:1}},
+          {l:'B', t:'Curious. You want to speak to vendors and buyers first to understand what is actually needed before committing.',       sc:{2:3,1:1}},
+          {l:'C', t:'Excited. No fixed brief means you can look beyond the obvious and find something the market has never seen.',          sc:{3:3,4:1}},
+          {l:'D', t:'Energised. An open brief is a chance to challenge assumptions and propose something better than first imagined.',       sc:{4:3,2:1}}
+        ]
+      },
+      {
+        sc:'alley', loc:"Inventors' Alley",
+        q:"With the task now on your plate, the vendor you hired for a key order is falling behind. The goods must leave before sunset or the deal falls through. How do you respond?",
+        opts:[
+          {l:'A', t:'Remind the group what is at stake and refocus everyone on what needs to happen right now.',                            sc:{1:3,4:1}},
+          {l:'B', t:'Bring everyone together, divide the remaining work, and make sure the vendor feels supported rather than blamed.',     sc:{2:3,0:1}},
+          {l:'C', t:'Find a way to speed things up or reroute part of the order to get it out on time, even if it means improvising.',     sc:{3:3,0:1}},
+          {l:'D', t:'Push through the crisis, then flag what was missing so future deals have clearer timelines and consequences.',         sc:{4:3,1:1}}
+        ]
+      },
+      {
+        sc:'workshops', loc:'The Guild Workshops',
+        q:"Word of your handling spreads quickly. Two vendors, each impressed by what they've seen, offer you a place in their workshop in exchange for a lifetime supply of goods for your village. You can only accept one. Which sounds more like you?",
+        opts:[
+          {l:'A', t:'One that follows a clear process for every deal: agreed criteria, proper records, and measurable results.',             sc:{0:3}},
+          {l:'B', t:'One that approaches every deal on its own terms, without a fixed process.',                                           sc:{3:3}}
+        ]
+      },
+      {
+        sc:'library', loc:'The Library Tower',
+        q:"Between tasks, you slip away to the Bazaar's old record room. Among dusty shelves and forgotten ledgers, you come across something unexpected. Which discovery stands out?",
+        opts:[
+          {l:'A', t:'The founding charter: why the market was created and what it was built to serve.',                                   sc:{1:3}},
+          {l:'B', t:'A proposal to overhaul how the market approves, tracks, and manages every deal.',                                    sc:{4:3}}
+        ]
+      },
+      {
+        sc:'festival', loc:"The Traders' Moon Festival",
+        q:"Following the trail from the record room, you find yourself at the heart of the Bazaar. It's festival night at the town square, vendors from across the region have gathered, and the evening is alive with possibility. By the time the night winds down, what would feel like a real success?",
+        opts:[
+          {l:'A', t:'Leaving with a deal agreed, terms locked in, and something concrete to bring back.',                                  sc:{0:3}},
+          {l:'B', t:'Walking away with a genuine connection you can rely on for future deals.',                                            sc:{2:3}}
+        ]
+      },
+      {
+        sc:'crossroads', loc:'The Whispering Crossroads',
+        q:"As the last lanterns dim, you pause for one final look at the Bazaar and smile. It has been quite a day. What would make you carry it home with a full heart?",
+        opts:[
+          {l:'A', t:'Knowing you did something here that had never been done before.',                                                     sc:{3:3}},
+          {l:'B', t:'Knowing the Bazaar will run a little differently because you showed up.',                                            sc:{4:3}}
+        ]
+      }
+    ];
+
+
+    // ============================================================
+    // ARCHETYPE DATA
+    // Array of 5 archetype objects (indices 0–4), each containing:
+    //   e               — emoji icon
+    //   n               — archetype name
+    //   sub             — subtitle / tagline
+    //   c               — primary colour (hex)
+    //   lt              — light tint background colour
+    //   br              — border/accent colour
+    //   desc            — long description paragraph
+    //   tags            — 3 keyword tags
+    //   pct             — percentage of users with this archetype
+    //   traits          — 5 short trait labels
+    //   strengths       — 3 strength statements
+    //   composition     — workstyle composition breakdown (pct + label)
+    //   complemented_by — indices of 2 complementary archetypes
+    //   career          — { text, roles[] } for the career panel
+    // ============================================================
+    var AR = [
+      // Index 0: The Achiever
+      {
+        e:'&#x1F3C6;', n:'The Achiever', sub:'Mastery-Driven',
+        c:'#b45309', lt:'#fef9c3', br:'#fcd34d',
+        desc:'You are driven by mastery. In the Bazaar, you navigate every procurement framework, policy, and process with precision and pride. Where others see complexity, you see a pathway forward, and you follow it with confidence. Your credibility is the currency you value most.',
+        tags:['Skill Mastery','Structured Progression','Credibility'],
+        pct:28,
+        traits:['Gets it done','Process is power','Frameworks are freedom','Eyes on the milestone','Structure first'],
+        strengths:[
+          'Masters procurement frameworks with precision and speed',
+          'Delivers consistent, measurable outcomes under pressure',
+          'Builds credibility through demonstrated expertise and rigour'
+        ],
+        composition:[
+          {pct:42, lbl:'Structured Execution'},
+          {pct:33, lbl:'Domain Mastery'},
+          {pct:25, lbl:'Outcome Focus'}
+        ],
+        complemented_by:[2,4],
+        career:{
+          text:'Your drive to master frameworks and demonstrate expertise makes you a natural in roles where rigour and structured progression are valued. Procurement is rich with policies to own and credentials to earn, and you will rise to meet every one of them.',
+          roles:['Procurement Policy and Framework Development','Contract Management and Governance','Capability Assessment and Accreditation','Procurement Standards and Compliance']
+        }
+      },
+      // Index 1: The Purpose-Driven
+      {
+        e:'&#x1F3AF;', n:'The Purpose-Driven', sub:'Impact-Oriented',
+        c:'#1d4ed8', lt:'#eff6ff', br:'#bfdbfe',
+        desc:'Every decision you make in the Bazaar connects to something bigger. You are motivated by the public value your choices create: not just the deal struck, but the schools funded, the services improved, the citizens served. Procurement, for you, is public service in action.',
+        tags:['Public Value','National Outcomes','Meaningful Impact'],
+        pct:22,
+        traits:['The bigger picture','Value beyond the contract','Why matters','Mission-first','Built for impact'],
+        strengths:[
+          'Connects every procurement decision to real public outcomes',
+          'Champions sustainable and responsible sourcing choices',
+          'Motivates teams around a shared mission and clear purpose'
+        ],
+        composition:[
+          {pct:38, lbl:'Strategic Vision'},
+          {pct:32, lbl:'Mission Clarity'},
+          {pct:30, lbl:'Public Service Heart'}
+        ],
+        complemented_by:[3,4],
+        career:{
+          text:'You come alive when the link between procurement decisions and real public outcomes is clear. Roles that make the stakes visible and the mission tangible will bring out your best work.',
+          roles:['Strategic Procurement Planning','Public Sector Impact Assessment','Policy Linkage and Outcomes Reporting','Social Value and Sustainability Procurement']
+        }
+      },
+      // Index 2: The Socialiser
+      {
+        e:'&#x1F91D;', n:'The Socialiser', sub:'Community-Driven',
+        c:'#7c3aed', lt:'#f5f3ff', br:'#c4b5fd',
+        desc:'The Bazaar thrives because of people like you. You build trust across guilds, bridge gaps between stakeholders, and make sure no voice goes unheard. Collaboration is not just your method; it is your competitive advantage in procurement.',
+        tags:['Belonging','Collaboration','Peer Connection'],
+        pct:18,
+        traits:['People first','Trust is currency','Better together','Cross-agency connector','Relationships that last'],
+        strengths:[
+          'Builds strong stakeholder networks that unlock value',
+          'Bridges gaps between agencies, suppliers, and teams',
+          'Creates high-trust environments where collaboration thrives'
+        ],
+        composition:[
+          {pct:40, lbl:'Relational Intelligence'},
+          {pct:33, lbl:'Collaborative Drive'},
+          {pct:27, lbl:'Stakeholder Empathy'}
+        ],
+        complemented_by:[0,1],
+        career:{
+          text:'You understand that the best procurement outcomes are never built alone. Your ability to foster cohort identity and cross-agency relationships makes you invaluable in roles built around people and partnerships.',
+          roles:['Stakeholder Engagement and Consultation','Community of Practice Leadership','Collaborative and Whole-of-Government Procurement','Supplier Relationship Management']
+        }
+      },
+      // Index 3: The Explorer
+      {
+        e:'&#x1F52D;', n:'The Explorer', sub:'Curiosity-Driven',
+        c:'#059669', lt:'#ecfdf5', br:'#a7f3d0',
+        desc:'You never stop at the main market. You wander down every alley, compare every stall, and ask questions nobody else thinks to ask. Your curiosity drives procurement innovation, uncovering suppliers, benchmarks, and approaches that others simply walk past.',
+        tags:['Discovery','Autonomy','New Contexts'],
+        pct:14,
+        traits:['What if we tried this?','Off the beaten path','Every market is a lesson','Discovery mode','Questions first'],
+        strengths:[
+          'Uncovers innovative sourcing strategies others walk past',
+          'Benchmarks across agencies, markets, and industries',
+          'Brings fresh thinking to complex procurement challenges'
+        ],
+        composition:[
+          {pct:36, lbl:'Curiosity Engine'},
+          {pct:34, lbl:'Adaptive Thinking'},
+          {pct:30, lbl:'Discovery Instinct'}
+        ],
+        complemented_by:[0,2],
+        career:{
+          text:'Roles that expose you to different agencies, industries, and procurement models will fuel your best work. You are at your best when given the freedom to explore, compare, and bring back ideas that reshape how procurement is done.',
+          roles:['Strategic Sourcing and Market Engagement','Rotational Procurement Programmes','Supplier Discovery and Benchmarking','Procurement Innovation and Research']
+        }
+      },
+      // Index 4: The Changemaker
+      {
+        e:'&#x26A1;', n:'The Changemaker', sub:'Steward Archetype',
+        c:'#dc2626', lt:'#fef2f2', br:'#fca5a5',
+        desc:'You are not here just to complete the mission. You are here to leave the Bazaar better than you found it. You improve systems, share knowledge, and invest in others. The work you do today shapes how procurement is practised for years to come.',
+        tags:['Systems Improvement','Knowledge Sharing','Stewardship'],
+        pct:18,
+        traits:['Leave it better','Systems thinker','Your growth is mine','Reform from within','Built to last'],
+        strengths:[
+          'Redesigns broken procurement processes for lasting impact',
+          'Mentors and develops the next generation of practitioners',
+          'Champions knowledge sharing and institutional memory'
+        ],
+        composition:[
+          {pct:35, lbl:'Reform Spirit'},
+          {pct:35, lbl:'Stewardship'},
+          {pct:30, lbl:'Knowledge Generosity'}
+        ],
+        complemented_by:[1,2],
+        career:{
+          text:'You are motivated by improving how things work for everyone, not just your own outcomes. Procurement needs people who think about the whole system and invest in building the next generation of practitioners.',
+          roles:['Procurement Transformation and Reform','Training, Coaching and Capability Building','Process Improvement and Innovation','Knowledge Management and Mentoring']
+        }
+      }
+    ];
+
+    // Archetype name list (used by scoring display)
+    var AN = ['Achiever','Purpose-Driven','Socialiser','Explorer','Changemaker'];
+
+
+    // ============================================================
+    // ARCHETYPE IMAGE MAPPING
+    // Maps each archetype index (0–4) to its image file in Images/.
+    // To update an image, change only the filename value for that index.
+    // ============================================================
+    var ARCHETYPE_IMAGES = {
+      0: 'Images/Archetype_The Achiever.png',
+      1: 'Images/Archetype_The Purpose-Driven.png',
+      2: 'Images/Archetype_The Socialiser.png',
+      3: 'Images/Archetype_The Explorer.png',
+      4: 'Images/Archetype_The Changemaker.png'
+    };
+
+
+    // ============================================================
+    // QUIZ STATE
+    // answers — array of selected option indices (null = unanswered)
+    // cur     — current question index (0-based)
+    // busy    — debounce flag to prevent double-clicks during transitions
+    // ============================================================
+    var answers, cur, busy;
+
+    // Calculate cumulative archetype scores from answers array
+    function getScores() {
+      var s = [0, 0, 0, 0, 0];
+      answers.forEach(function(ai, qi) {
+        if (ai !== null) {
+          var sc = QS[qi].opts[ai].sc;
+          for (var k in sc) { s[+k] += sc[k]; }
+        }
+      });
+      return s;
+    }
+
+
+    // ============================================================
+    // SVG SCENE SWITCHER
+    // Fades out the SVG element, swaps content, fades back in.
+    // ============================================================
+    function setSvg(id, key) {
+      var el = document.getElementById(id);
+      el.style.transition = 'opacity .5s';
+      el.style.opacity = '0';
+      setTimeout(function() {
+        el.innerHTML = SC[key];
+        el.style.opacity = '1';
+      }, 80);
+    }
+
+
+    // ============================================================
+    // PROGRESS TRACK UPDATE
+    // (No-op placeholder — progress track is rebuilt inside renderQ)
+    // ============================================================
+    function upProg() {}
+
+
+    // ============================================================
+    // CONFETTI
+    // Spawns 68 confetti pieces in the archetype's colour palette.
+    // Each piece falls and rotates off-screen, then is removed from DOM.
+    // ============================================================
+    function confetti(mc) {
+      var pal = [mc, '#fbbf24', '#d97706', '#1e3a5f', '#92400e', '#f97316', '#fff8ec'];
+      for (var i = 0; i < 68; i++) {
+        (function(i) {
+          setTimeout(function() {
+            var el = document.createElement('div');
+            el.className = 'cf';
+            var s = 5 + Math.random() * 9;
+            el.style.cssText =
+              'left:' + (8 + Math.random() * 84) + '%;top:0;' +
+              'width:' + s + 'px;height:' + s + 'px;' +
+              'background:' + pal[Math.floor(Math.random() * pal.length)] + ';' +
+              'border-radius:' + (Math.random() > .5 ? '50%' : '3px') + ';' +
+              'animation-duration:' + (1.8 + Math.random() * 2) + 's;' +
+              'animation-delay:' + (Math.random() * .7) + 's';
+            document.body.appendChild(el);
+            setTimeout(function() { if (el.parentNode) el.parentNode.removeChild(el); }, 5000);
+          }, i * 18);
+        })(i);
+      }
+    }
+
+
+    // ============================================================
+    // START QUIZ
+    // Resets state, hides intro card, shows question card.
+    // ============================================================
+    function startQuiz() {
+      answers = new Array(QS.length).fill(null);
+      cur = 0;
+      busy = false;
+      document.getElementById('iCard').style.display = 'none';
+      var qc = document.getElementById('qCard');
+      qc.style.display = 'block';
+      qc.style.opacity = '1';
+      qc.style.transform = '';
+      qc.classList.remove('cin');
+      qc.offsetHeight; // force reflow to restart animation
+      qc.classList.add('cin');
+      upProg();
+      renderQ();
+    }
+
+
+    // ============================================================
+    // RENDER QUESTION
+    // Populates the question card with data for the current question.
+    // Rebuilds the progress track and staggered answer option buttons.
+    // ============================================================
+    function renderQ() {
+      var q = QS[cur];
+
+      // Update scene illustration
+      setSvg('qSvg', q.sc);
+
+      // Update question number label
+      document.getElementById('qn').textContent = 'Question ' + (cur + 1) + ' of ' + QS.length;
+
+      // Update question text
+      document.getElementById('qt').textContent = q.q;
+
+      // Show/hide back button
+      var bb = document.getElementById('backBtn');
+      if (cur > 0) { bb.classList.remove('hidden'); } else { bb.classList.add('hidden'); }
+
+      // Rebuild progress track dots
+      var pt = document.getElementById('ptrack');
+      pt.innerHTML = '';
+      for (var pi = 0; pi < QS.length; pi++) {
+        var ps = document.createElement('div');
+        ps.className = 'pts' + (pi < cur ? ' done' : pi === cur ? ' active' : '');
+        pt.appendChild(ps);
+      }
+
+      // Rebuild answer option buttons (staggered entrance animation)
+      var os = document.getElementById('os');
+      os.innerHTML = '';
+      q.opts.forEach(function(o, i) {
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'ob' + (answers[cur] === i ? ' sel' : '');
+        b.innerHTML = '<span class="ol">' + o.l + '</span><span>' + o.t + '</span>';
+        b.onclick = function() { pick(i, b); };
+        os.appendChild(b);
+        setTimeout(function() { b.classList.add('in'); }, 300 + i * 65);
+      });
+    }
+
+
+    // ============================================================
+    // PICK ANSWER
+    // Records the selected answer, then advances to the next question
+    // or triggers showResult() if all questions are answered.
+    // ============================================================
+    function pick(optIdx, btn) {
+      if (busy) return;
+      busy = true;
+
+      // Highlight selected option
+      var btns = document.querySelectorAll('#os .ob');
+      for (var i = 0; i < btns.length; i++) { btns[i].classList.remove('sel'); }
+      btn.classList.add('sel');
+      answers[cur] = optIdx;
+
+      setTimeout(function() {
+        cur++;
+        upProg();
+        if (cur < QS.length) {
+          // Animate card out, swap question, animate back in
+          var qc = document.getElementById('qCard');
+          qc.style.transition = 'opacity .3s,transform .3s';
+          qc.style.opacity = '0';
+          qc.style.transform = 'translateY(-14px)';
+          setTimeout(function() {
+            qc.style.opacity = '1';
+            qc.style.transform = '';
+            renderQ();
+            busy = false;
+          }, 340);
+        } else {
+          showResult();
+        }
+      }, 380);
+    }
+
+
+    // ============================================================
+    // GO BACK
+    // Decrements current question index and re-renders the question card.
+    // ============================================================
+    function goBack() {
+      if (cur <= 0 || busy) return;
+      busy = true;
+      var qc = document.getElementById('qCard');
+      qc.style.transition = 'opacity .28s,transform .28s';
+      qc.style.opacity = '0';
+      qc.style.transform = 'translateY(14px)';
+      setTimeout(function() {
+        cur--;
+        upProg();
+        qc.style.opacity = '1';
+        qc.style.transform = '';
+        renderQ();
+        setTimeout(function() { busy = false; }, 320);
+      }, 300);
+    }
+
+
+    // ============================================================
+    // SHOW RESULT (Procurement card — shown first after quiz)
+    // Calculates scores, identifies winning archetype, populates
+    // the procurement result card (rCard) and general result card
+    // (gCard) with all archetype data, then transitions to rCard.
+    // ============================================================
+    function showResult() {
+      var scores = getScores();
+      var mx = Math.max.apply(null, scores);
+      var ti = scores.indexOf(mx);
+      var a = AR[ti];
+
+      // Set aura colour
+      document.getElementById('rAura').style.background = a.c;
+
+      // Set archetype character image
+      var charImg = document.getElementById('rCharImg');
+      charImg.src = ARCHETYPE_IMAGES[ti];
+      charImg.alt = a.n;
+
+      // Archetype badge (sub-title pill)
+      var badge = document.getElementById('r2Badge');
+      badge.textContent = a.sub;
+      badge.style.color = a.c;
+      badge.style.background = a.lt;
+      badge.style.borderColor = a.br;
+
+      // Archetype name
+      var nm = document.getElementById('r2Name');
+      nm.textContent = a.n;
+      nm.style.color = a.c;
+
+      // "X% of guild members" line
+      document.getElementById('r2Pct').innerHTML = '<strong>' + a.pct + '%</strong> of guild members share this path';
+
+      // Trait pill tags
+      document.getElementById('r2Traits').innerHTML = a.traits.map(function(t) {
+        return '<span class="r2-trait" style="color:' + a.c + ';border-color:' + a.br + ';background:' + a.lt + '">' + t + '</span>';
+      }).join('');
+
+      // Strengths section header
+      var sh = document.getElementById('r2StrHd');
+      sh.style.color = a.c;
+      sh.style.background = a.lt;
+      sh.style.borderColor = a.br;
+
+      // Strengths bullet list
+      document.getElementById('r2StrList').innerHTML = a.strengths.map(function(s) {
+        return '<li class="r2-str-item"><span class="r2-str-dot" style="background:' + a.c + '"></span><span>' + s + '</span></li>';
+      }).join('');
+
+      // Composition section header
+      var ch = document.getElementById('r2CompHd');
+      ch.style.color = a.c;
+      ch.style.background = a.lt;
+      ch.style.borderColor = a.br;
+
+      // Composition percentage list
+      document.getElementById('r2CompList').innerHTML = a.composition.map(function(ci) {
+        return '<div class="r2-comp-item">' +
+          '<span class="r2-comp-pct" style="color:' + a.c + '">' + ci.pct + '%</span>' +
+          '<span class="r2-comp-lbl"> ' + ci.lbl + '</span>' +
+        '</div>';
+      }).join('');
+
+      // Complemented-by section header
+      var cbh = document.getElementById('r2CbHd');
+      cbh.style.color = a.c;
+      cbh.style.background = a.lt;
+      cbh.style.borderColor = a.br;
+
+      // Complemented-by archetype cards
+      document.getElementById('r2CbCards').innerHTML = a.complemented_by.map(function(ci) {
+        var ca = AR[ci];
+        return '<div class="r2-compby-card" style="background:' + ca.lt + ';border-color:' + ca.br + '">' +
+          '<span class="r2-compby-emoji">' + ca.e + '</span>' +
+          '<div class="r2-compby-name" style="color:' + ca.c + '">' + ca.n + '</div>' +
+          '<div class="r2-compby-desc">' + ca.sub + '</div>' +
+        '</div>';
+      }).join('');
+
+      // Career path text and roles
+      document.getElementById('r2CareerTxt').textContent = a.career.text;
+      document.getElementById('r2CareerRoles').innerHTML = a.career.roles.map(function(r) {
+        return '<div class="r2-career-role"><div class="r2-career-dot"></div>' + r + '</div>';
+      }).join('');
+
+      // Transition: hide question card, show procurement result card
+      var qc = document.getElementById('qCard');
+      qc.style.transition = 'opacity .3s,transform .3s';
+      qc.style.opacity = '0';
+      qc.style.transform = 'translateY(-14px)';
+      setTimeout(function() {
+        qc.style.display = 'none';
+        var rc = document.getElementById('rCard');
+        rc.style.display = 'block';
+        rc.classList.remove('cin');
+        rc.offsetHeight; // force reflow
+        rc.classList.add('cin');
+        confetti(a.c);
+        busy = false;
+      }, 360);
+    }
+
+
+    // ============================================================
+    // SHOW GENERAL RESULTS (Archetype card)
+    // Transitions from the procurement result card to the full
+    // archetype breakdown card (gCard).
+    // ============================================================
+    function showGeneralResults() {
+      var rc = document.getElementById('rCard');
+      var gc = document.getElementById('gCard');
+      rc.style.transition = 'opacity .28s,transform .28s';
+      rc.style.opacity = '0';
+      rc.style.transform = 'translateY(-14px)';
+      setTimeout(function() {
+        rc.style.display = 'none';
+        rc.style.opacity = '';
+        rc.style.transform = '';
+        gc.style.display = 'block';
+        gc.classList.remove('cin');
+        gc.offsetHeight; // force reflow
+        gc.classList.add('cin');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+    }
+
+
+    // ============================================================
+    // SHOW RCARD (Back from archetype result to procurement card)
+    // ============================================================
+    function showRCard() {
+      var gc = document.getElementById('gCard');
+      var rc = document.getElementById('rCard');
+      gc.style.transition = 'opacity .28s,transform .28s';
+      gc.style.opacity = '0';
+      gc.style.transform = 'translateY(14px)';
+      setTimeout(function() {
+        gc.style.display = 'none';
+        gc.style.opacity = '';
+        gc.style.transform = '';
+        rc.style.display = 'block';
+        rc.classList.remove('cin');
+        rc.offsetHeight; // force reflow
+        rc.classList.add('cin');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, 300);
+    }
+
+
+    // ============================================================
+    // RESET QUIZ
+    // Clears all state and returns to the intro card.
+    // ============================================================
+    function resetQuiz() {
+      answers = new Array(QS.length).fill(null);
+      cur = 0;
+      busy = false;
+      document.getElementById('rCard').style.display = 'none';
+      document.getElementById('gCard').style.display = 'none';
+      var ic = document.getElementById('iCard');
+      ic.style.display = 'block';
+      ic.classList.remove('cin');
+      ic.offsetHeight; // force reflow
+      ic.classList.add('cin');
+      setSvg('iSvg', 'intro');
+    }
+
+
+    // ============================================================
+    // INIT: Set intro scene SVG on page load
+    // ============================================================
+    setSvg('iSvg', 'intro');
+
+
+    // ============================================================
+    // SPARKLE PARTICLES
+    // Spawns 5 floating sparkle dots around the character illustration.
+    // ============================================================
+    (function(){
+      var wrap = document.getElementById('charWrap');
+      if (!wrap) return;
+      var cols = ['#fbbf24','#d97706','#fef3c7','#f59e0b'];
+      for (var i = 0; i < 5; i++) {
+        var p = document.createElement('div');
+        p.className = 'spar';
+        var s = 3 + Math.random() * 3;
+        p.style.cssText =
+          'width:' + s + 'px;height:' + s + 'px;' +
+          'background:' + cols[i % cols.length] + ';' +
+          'left:' + (18 + Math.random() * 66) + '%;' +
+          'top:' + (24 + Math.random() * 44) + '%;' +
+          'animation-duration:' + (2.2 + Math.random() * 2.4) + 's;' +
+          'animation-delay:-' + (Math.random() * 2.4) + 's;' +
+          'opacity:0';
+        wrap.appendChild(p);
+      }
+    })();
+
+  </script>
+</body>
+</html>
